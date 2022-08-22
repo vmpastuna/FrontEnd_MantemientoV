@@ -17,8 +17,12 @@ export const RepuestoForm=()=> {
         tipo:"",
         descripcion:"",
         cantidad:1,
+        vehiculo: null,
+        mantenimiento: null
+
      };
 
+     
      //Hooks para gestionar el modelo
      const[repuesto,setRepuesto]=useState<IRepuestoModel>(initialRepuestoModel);
 

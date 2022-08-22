@@ -1,3 +1,5 @@
+import IMantenimientoModel from "./Mantenimiento";
+import IVehiculoModel from "./Vehiculo";
 
 export default interface  IRepuestoModel {
 
@@ -5,6 +7,8 @@ export default interface  IRepuestoModel {
     nombre: string,
     tipo: string,
     descripcion:string,
-    cantidad:number
+    cantidad:number,
+    vehiculo:IVehiculoModel |null,
+    mantenimiento:IMantenimientoModel | null
     
 }

@@ -4,7 +4,8 @@ import IRepuestoModel from "../models/Repuesto";
 
 const create = async (data: IRepuestoModel) => {    
   try {
-    const response = await http.post<IRepuestoModel>("/repuestos", data);
+    const url : string = "/vehiculos/" + data.vehiculo!.id + "/mantenimientos"+data.id!+"/repuesto";
+    const response = await http.post<IRepuestoModel>(url, data);
     if(response.status === 201){
       Swal.fire({
         icon: 'success',
@@ -25,6 +26,7 @@ const create = async (data: IRepuestoModel) => {
     });
   }
 };
+
 
 const retrieve = async (id: number) => {
     return http.get<IRepuestoModel>(`/repuestos/${id}`);

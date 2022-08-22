@@ -1,3 +1,4 @@
+import IVehiculoModel from "./Vehiculo"
 
 export default interface  IMantenimientoModel {
 
@@ -6,6 +7,7 @@ export default interface  IMantenimientoModel {
     fechaMantenimiento: string,
     precio:number,
     tipo:string,
+    vehiculo: IVehiculoModel | null
    
     
 }

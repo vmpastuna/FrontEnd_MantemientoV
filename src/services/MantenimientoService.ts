@@ -1,15 +1,18 @@
-import Swal from "sweetalert2";
+import { showAlert ,showErrorAlert} from "../common/alerts";
 import http from "../http-common";
+import Swal from "sweetalert2";
 import IMantenimientoModel from "../models/Mantenimiento";
+import { NumericLiteral } from "typescript";
 
 const create = async (data: IMantenimientoModel) => {    
   try {
-    const response = await http.post<IMantenimientoModel>("/vehiculos/1/mantenimientos", data);
+    const url : string = "/vehiculos/" + data.vehiculo!.id + "/mantenimientos";
+    const response = await http.post<IMantenimientoModel>(url, data);
     if(response.status === 201){
       Swal.fire({
         icon: 'success',
         title: 'Correcto',
-        text: 'Mantenimiento registrado correctamente',
+        text: 'Mantenimiento creado correctamente',
         confirmButtonText: 'Aceptar'    
 
       });
@@ -25,66 +28,38 @@ const create = async (data: IMantenimientoModel) => {
     });
   }
 };
-
-const retrieve = async (id: number) => {
-    return http.get<IMantenimientoModel>(`/mantenimientos/${id}`);
-};
-
-const update = async (data: IMantenimientoModel) => {
-  try {    
-    const response = await http.put<IMantenimientoModel>(`/mantenimientos/${data.id}`, data);
-    if(response.status === 200){
-      Swal.fire({
-        icon: 'success',
-        title: 'Correcto',
-        text: ' Mantenimiento actualizado',
-        confirmButtonText: 'Aceptar'    
-      });
-    }
-
-  } catch (error) {
-    Swal.fire({
-      icon: 'error',
-      title: '¡Error!',
-      text: 'Network Error',
-      confirmButtonText: 'Aceptar'    
-    });
-  }
-    
-};
-
-const remove = async (id: number) => {
-    try {
-      const response = await  http.delete<string>(`/mantenimientos/${id}`);
-      if(response.status === 200){
-        Swal.fire({
-          icon: 'success',
-          title: 'Correcto',
-          text: 'Mantenimiento eliminado',
-          confirmButtonText: 'Aceptar'    
-        });
-      }
-    } catch (error) {
-      Swal.fire({
-      icon: 'error',
-      title: '¡Error!',
-      text: 'Network Error',
-      confirmButtonText: 'Aceptar'    
-    });
-    }
-
+const retrieve = async (idVehiculo:number,id:number) => {
+    return await http.get<IMantenimientoModel>(`/vehiculos/${idVehiculo}/mantenimientos/${id}`);
 };
 
 
-const list = (page: number, size: number, sort? : String) => {
-  const urlRequest : string = "/mantenimientos/" + page + "/" + size ;
-  console.log(urlRequest);
-  return http.get<Array<IMantenimientoModel>>(urlRequest);
+const update = async (data: IMantenimientoModel) => {     
+  const url : string = `/vehiculos/${data.vehiculo!.id}/mantenimientos/${data.id!}`; 
+  http.put<IMantenimientoModel>(url, data).then((response) => {
+    console.log(response);
+    showAlert('¡Correcto!','Mantenimiento actualizada correctamente');
+  }).catch((err) => {
+    console.error(err);
+    showErrorAlert('¡Error!', 'La pregunta no pudo ser actualizada');
+  });       
 };
 
-const count = async () =>  {  
-  const response = await http.get<number>("/mantenimientos/count");
-  return response.data;
+const remove = async (idVehiculo: number , id : number) => {
+  const url : string = `/vehiculos/${idVehiculo}/mantenimientos/${id}`; 
+  http.delete<string>(url).then((response) =>{
+    console.log(response);
+    showAlert('¡Correcto!','Mantenimieto eliminado correctamente');
+  }).catch((err)=>{
+    console.error(err);
+    showErrorAlert('¡Error!', 'Error al Eliminar Mantenimiento');
+  });
+};
+
+
+const list=async( idVehiculo:number)=>{
+  const url: string =`/vehiculos/${idVehiculo}/mantenimientos`;
+  return await http.get<Array<IMantenimientoModel>>(url);
+
 };
 
 const MantenimientoService = {
@@ -93,7 +68,6 @@ const MantenimientoService = {
   update,
   remove,
   list,
-  count
-
+ 
 };
 export default MantenimientoService;

@@ -6,14 +6,9 @@ import { VehiculoList } from "./components/Vehiculo/VehiculoList";
 import { VehiculoForm } from './components/Vehiculo/VehiculoForm';
  import { VehiculoCard } from "./components/Vehiculo/VehiculoCard";
 //importaciones de entidad mantenimiento
- import { MantenimientoList } from "./components/Mantenimiento/MantenimientoList";
  import { MantenimientoForm } from "./components/Mantenimiento/MantenimientoForm";
  import { MantenimientoCard } from "./components/Mantenimiento/MantenimientoCard";
-//importaciones de entidad repuesto
- import { RepuestoList } from "./components/Repuesto/RepuestoList";
- import { RepuestoForm } from "./components/Repuesto/RepuestoForm";
-import { RepuestoCard } from "./components/Repuesto/RepuestoCard";
-
+ 
 const title = "Mechanical Workshop";
 const description = "Control de Mantenimiento Vehicular";
 
@@ -46,24 +41,19 @@ const App: React.FC = () => {
       <div className="container mt-3">
         <Routes>
           <Route path="/" element={<Home title={title} description={description} />} />    
-          <Route path="/vehiculos" element={<VehiculoList/>}/>    
-          <Route path="/vehiculos/create" element={<VehiculoForm/>}/>   
-          <Route path="/vehiculos/retrieve/:id" element={<VehiculoCard/>}/>  
-          <Route path="/vehiculos/update/:id" element={<VehiculoForm/>}/>  
+          <Route path="/vehiculos" element={<VehiculoList />}/>    
+          <Route path="/vehiculos/create" element={<VehiculoForm />}/>   
+          <Route path="/vehiculos/retrieve/:id" element={<VehiculoCard />}/>  
+          <Route path="/vehiculos/update/:id" element={<VehiculoForm />}/>  
+  
+          <Route path="/vehiculos/:idVehiculo/mantenimientos/create" element={<MantenimientoForm />}/>    
+          <Route path="/vehiculos/:idVehiculo/mantenimientos/retrieve/:id" element={<MantenimientoCard />} />
+          <Route path="/vehiculos/:idVehiculo/mantenimientos/:id" element={<MantenimientoForm />}/> 
+          <Route path="/vehiculos/:idVehiculo/mantenimientos/update/:id" element={<MantenimientoForm />} />
 
-
-          <Route path="/mantenimientos" element={<MantenimientoList/>}/>    
-          <Route path="/mantenimientos/create" element={<MantenimientoForm/>}/>   
-          <Route path="/mantenimientos/retrieve/:id" element={<MantenimientoCard/>}/>  
-          <Route path="/mantenimientos/update/:id" element={<MantenimientoForm/>}/> 
-
-
-          <Route path="/repuestos" element={<RepuestoList/>}/>    
-          <Route path="/repuestos/create" element={<RepuestoForm/>}/>   
-          <Route path="/repuestos/retrieve/:id" element={<RepuestoCard/>}/>  
-          <Route path="/repuestos/update/:id" element={<RepuestoForm/>}/> 
+     
           
-        
+           
         </Routes>
       </div>
     </div>

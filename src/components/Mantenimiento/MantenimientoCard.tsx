@@ -1,68 +1,85 @@
 import { ChangeEvent, useEffect, useState } from "react";
 import { FaArrowLeft, FaTrash } from "react-icons/fa";
-import { Link } from "react-router-dom";
-import { useParams } from "react-router-dom";
 import React from 'react';
+import { Link, useNavigate, useParams } from "react-router-dom";
+import IVehiculoModel from "../../models/Vehiculo";
 import IMantenimientoModel from "../../models/Mantenimiento";
+import VehiculoService from "../../services/VehiculoService";
 import MantenimientoService from "../../services/MantenimientoService";
 
 
-
-
 export const MantenimientoCard=()=> {
-    const {id}=useParams();
 
+    const {id,idVehiculo}=useParams();
+    let navigate=useNavigate();
+
+    //Hooks para gestionar el modelo
     const[mantenimiento,setMantenimiento]=useState<IMantenimientoModel>();
-    useEffect(()=> {
-        if(id)
-        getMantenimiento(id);
-    },[id]);
-    
-    const getMantenimiento=(id:any)=>{
-        MantenimientoService.retrieve(id).then((response:any)=>{
-            setMantenimiento(response.data);
-            console.log(response.data);
-        }).catch((e:Error)=>{
-            console.log(e);
-        });
-    };
+    const[vehiculo,setVehiculo]=useState<IVehiculoModel>();
 
+
+    useEffect(()=> {
+        if(idVehiculo){
+         VehiculoService.retrieve(+idVehiculo).then((response:any)=>{
+            setVehiculo(response.data);
+            mantenimiento!.vehiculo=vehiculo!;
+            console.log(response.data);
+         }).catch((e:Error)=>
+         {
+            console.log(e);
+         });
+        }
+
+        if(id && idVehiculo){
+            MantenimientoService.retrieve(+idVehiculo,+id).then((response:any)=>{
+                setMantenimiento(response.data);
+                mantenimiento!.vehiculo=vehiculo!;
+                console.log(response.data);
+            }).catch((e:Error)=>{
+                console.log(e);
+            });
+        }
+    },[vehiculo,mantenimiento,id,idVehiculo]);
+
+console.log("hi");
     return ( 
         <div>
             {
                 
                 mantenimiento?(
-                <div>
-                    <h1>Nombre:{mantenimiento.nombre}</h1>
-
+                <div className="card text-white bg-dark mb-3 p-5">
+                    
                     <tr>
-                        <td>Fecha Mantenimiento:{mantenimiento.fechaMantenimiento}</td>
+                        <td>
+                         <strong>Nombre:</strong>{mantenimiento.nombre} 
+                        </td>
                     </tr>
 
                     <tr>
-                        <td>Precio: {mantenimiento.precio}</td>
+                        <td>
+                            <strong>Fecha Mantenimiento:</strong> {mantenimiento.fechaMantenimiento}</td>
                     </tr>
 
                     <tr>
-                        <td> Tipo:{mantenimiento.tipo}</td>
+                        <td>
+                           <strong> Precio:</strong>  {mantenimiento.precio}</td>
+                    </tr>
+
+                    <tr>
+                        <td>
+                            <strong> Tipo:</strong> {mantenimiento.tipo}</td>
                     </tr>
 
                     
                     
                     <br />
                     <div className="btn-group" role="group">
-                    <Link to={"/mantenimientos"} className="btn btn-primary">
+                    <Link to={`/vehiculos/retrieve/${idVehiculo}`} className="btn btn-primary">
                     <FaArrowLeft /> Volver
                     </Link>
-                    
-                    <button type="button" className="btn btn-danger">
-                    <FaTrash />Eliminar
-                    </button>
+      
 
                     </div>
-
-
-
 
                 </div>
 
@@ -70,6 +87,7 @@ export const MantenimientoCard=()=> {
                 ):
                 (
                     <h1>No hay ningun Mantenimiento</h1>
+                    
                 )
             }
 

@@ -1,56 +1,83 @@
-
 import { FaPen, FaEye, FaTrash, FaPlus } from "react-icons/fa";
-import React, {useState, useEffect,ChangeEvent } from 'react';
-import Swal from "sweetalert2";
-
-import ReactPaginate from "react-paginate";
-import { Link } from 'react-router-dom';
+import React, { ChangeEvent,useState, useEffect } from 'react'
+import { Link,useParams} from 'react-router-dom';
 import VehiculoService from '../../services/VehiculoService';
 import IVehiculoModel from '../../models/Vehiculo';
- 
+import Swal from "sweetalert2";
+import ReactPaginate from "react-paginate";
+import Dropdown from 'react-dropdown'
+import axios from "axios";
+import { showAlert, showErrorAlert } from "../../common/alerts";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faSearch } from "@fortawesome/free-solid-svg-icons";
 
+export const VehiculoList = () => {
+    const{id}=useParams();
+    
+    //Hook: Define un atributo y la función que lo va a actualizar
+    const [vehiculos,setVehiculos] = useState<Array<IVehiculoModel>>([]);
+    const [itemsCount, setItemsCount] = useState<number>(0);
+    const [pageCount, setPageCount] = useState<number>(0);
+    const [itemsPerPage, setItemsPerPage] = useState<string>('5');
+    const [numberPage, setNumberPage] = useState<number>(0);
+    
+    const[busqueda,setBusqueda]=useState("")
+    
+    
 
-export const VehiculoList =()=> {
-   //Hook define un atributo y la funcion lo va actualizar 
-    const [vehiculos,setVehiculos]= useState<Array<IVehiculoModel>>([]);
-    const [itemsCount,setItemsCount]=useState<number>(0);
-    const [pageCount,setPageCount]=useState(0);
-    const [itemsPerPage,setItemsPerPage]=useState(5);
-
-    //Hook para llamar a la web API
+    //Hook para llamar a la Web API
     useEffect(() => {
-        getItems();  
-        listVehiculos(0, itemsPerPage);           
-        }, []);
-
-    const handlePageClick=(event:any)=>{
-        const numberPage=event.selected;
-        listVehiculos(numberPage,itemsPerPage);
-        
-    };
-
-    //Funcion que llama al servicio y listar datos de la web Api
-    const listVehiculos=(page:number, size:number)=>{
-        VehiculoService.list(page,size).then((response:any)=>{
-            setVehiculos(response.data);
-            console.log(response.data);
-        }).catch((e :Error)=>{
-            console.log(e);
-        });
-        
-    };
-
-    const getItems =()=>{
-        VehiculoService.count().then((response:any)=>{
-        var itemsCount=response;
+      VehiculoService.count().then((response: any) =>{        
+        var itemsCount = response;
         setItemsCount(itemsCount);
-        setPageCount(Math.ceil(itemsCount/itemsPerPage));
-        setItemsPerPage(4);
+        setPageCount(Math.ceil(itemsCount/ +itemsPerPage));
         console.log(response);
-        }).catch((e:Error)=>{
-            console.log(e);
-        });
+      }).catch((e : Error)=> {
+        console.log(e);
+      });      
+    },[itemsPerPage]);
+
+   //Metodo de filtrado
+    const filtroBu  = () : IVehiculoModel[] => {
+      if (busqueda.length === 0 ) 
+        return vehiculos ;
+      const filtro = vehiculos.filter (pro =>
+        pro.placa.toString().toLowerCase().includes(busqueda.toLowerCase()))
+      
+      return filtro
+    }
+
+     //Captar busqueda
+    const handleChange = (e : any ) => {
+      setBusqueda(e.target.value)
+      setPageCount(0);
+     }
+
+
+    useEffect(() => {
+      VehiculoService.list(numberPage, +itemsPerPage)
+         .then((response: any) => {
+           setVehiculos(response.data); //Víncula el resultado del servicio con la función del Hook useState           
+           console.log(response.data);
+         })
+         .catch((e: Error) => {
+           console.log(e);
+         });          
+    },[itemsPerPage, numberPage, itemsCount]);   
+
+
+
+
+
+    const handlePageClick = (event: any) => {        
+      setNumberPage(event.selected);                         
     };
+
+
+    const handleItemPerPageClick = (event : any) => {
+      setItemsPerPage(event.value);
+    }
+
 
     const removeVehiculo=(id:number)=>{
         Swal.fire({
@@ -60,30 +87,51 @@ export const VehiculoList =()=> {
             denyButtonText:'No',
         }).then((result)=>{
             if(result.isConfirmed){
-                VehiculoService.remove(id).then((response:any)=>{
-                    listVehiculos(0,itemsPerPage);
-
+                VehiculoService.remove(id)
+                .then((response:any)=>{
+                    var updateItemsCount=itemsCount-1;
+                    setItemsCount(updateItemsCount);
+                    setPageCount(Math.ceil(updateItemsCount/+itemsPerPage));
+                    showAlert('¡Correcto!','Registro eliminado Correctamente');
                 }).catch((e:Error)=>{
+                    showErrorAlert('¡Error!', 'Error al intentar borrar el registro');
                     console.log(e);
-                })
+                });      
             }
-        });
-    };
+          });        
+     };
 
 
-    return (  
-        
-        <div className="list row">
-            <h1> hay {itemsCount} Vehículos</h1>
-            <div className="col-md-12">
-                <select className="form-control w-25 mb-2">
-                    <option value="2">2</option>
-                    <option value="4">4</option>
-                    <option value="6">6</option>
-                    <option value="8">8</option>
-                </select>
-                <table className="table">
-                    <thead>
+
+    
+     
+     const options = ["5", "10", "15" ];
+
+   
+    return ( 
+        <div className='list row'>
+              <h1> hay {itemsCount} Vehículos</h1>
+            <div className="row containerInput">
+                    <div className="col-5">
+                      <input
+                      className="form-control inputBuscar"
+                      value={busqueda}
+                      placeholder="Búsqueda por Placa"
+                      onChange={handleChange}
+                      />
+                    </div>
+                    <div className="col-2">
+                      <button className="btn btn-success ">
+                      <FontAwesomeIcon icon={faSearch}/>
+                      </button>
+                    </div>
+                    
+
+            </div>
+            <div className="m-"></div>
+            <div className="table">
+                <table className="table table-striped ">
+                    <thead >
                         <tr>
                             <th>#</th>
                             <th>Placa</th>
@@ -91,35 +139,47 @@ export const VehiculoList =()=> {
                             <th>Color</th>
                             <th>Marca</th>
                             <th>
-                            <Link to={"/vehiculos/create"} className="btn btn-success">
+                                <Link to={"/vehiculos/create"} className="btn btn-success">
                                   <FaPlus /> Agregar
-                              </Link>
+                                </Link>
                             </th>
+                            <th>
+                            <Dropdown 
+                              className="dropdown"
+                              menuClassName="dropdown-menu dropdown-item"                              
+                              placeholderClassName="btn btn-secondary dropdown-toggle"
+                              options={options} 
+                              onChange={handleItemPerPageClick}
+                              value={itemsPerPage} 
+                              />
+                            </th>   
                         </tr>
+                        
                     </thead>
                     <tbody>
                       {vehiculos && vehiculos.map((Vehiculo,index)=>(
                         <tr key={index}>
-                            <td>{++index}</td>
+                            <td>{(numberPage * +itemsPerPage) + index + 1}</td>
                             <td>{Vehiculo.placa}</td>
                             <td>{Vehiculo.modelo}</td>
                             <td>{Vehiculo.color}</td>
                             <td>{Vehiculo.marca}</td>
+                            <td colSpan={2}> 
 
-                            <div className="Btn-group " role="group">
-                                <Link to={"/vehiculos/retrieve/" + Vehiculo.id} className="btn btn-warning">
+                            <div role="group">
+                                <Link to={"/vehiculos/retrieve/" + Vehiculo.id} className="btn btn-outline-warning m-1">
                                         <FaEye /> Ver
                                 </Link>  
-                                <Link to={"/vehiculos/update/" + Vehiculo.id} className="btn btn-primary">
-                                        <FaEye /> Editar
+                                <Link to={"/vehiculos/update/" + Vehiculo.id} className="btn btn-outline-primary m-1">
+                                        <FaPen/> Editar
                                 </Link> 
-                                <button className="btn btn-danger" onClick={()=>removeVehiculo(Vehiculo.id!)}>
+                                <button className="btn btn-outline-danger m-1" onClick={()=>removeVehiculo(Vehiculo.id!)}>
                                     <FaTrash/>Eliminar
                                 </button>
 
 
                             </div>
-
+                            </td>
                         </tr>
                         
                     
@@ -127,30 +187,25 @@ export const VehiculoList =()=> {
                     </tbody>
                 </table>
 
+                <div className="container">
+                <ReactPaginate
+                  activeClassName="page-item active"                
+                  pageLinkClassName="page-link"
+                  containerClassName="pagination"
+                  previousLinkClassName="page-link"
+                  nextLinkClassName="page-link"
+                  previousClassName="page-item"
+                  nextClassName="page-item"
+                  breakLabel="..."
+                  nextLabel=">>"
+                  pageClassName="page-item"
+                  onPageChange={handlePageClick}                  
+                  pageCount={pageCount}
+                  previousLabel="<<"
+                  />
+                  </div>
 
-            <ReactPaginate 
-                previousLabel={'Anterior'}
-                nextLabel={'Siguiente'}
-                breakLabel={'...'}
-                pageCount={pageCount}
-                marginPagesDisplayed={3}
-                pageRangeDisplayed={3}
-                onPageChange={handlePageClick}
-                containerClassName={'pagination justify-content-center'}
-                pageClassName={'page-item'}
-                pageLinkClassName={'page-link'}
-                previousClassName={'page-item'}
-                previousLinkClassName={'page-link'}
-                nextClassName={'page-item'}
-                nextLinkClassName={'page-link'}
-                activeClassName={'active'}
-            />
-            </div>
-        
+            </div>            
         </div>
-    );
-
-
-}
-
- 
+     );
+};

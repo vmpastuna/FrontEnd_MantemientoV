@@ -1,80 +1,62 @@
 import { ChangeEvent, useEffect, useState } from "react";
 import { FaArrowLeft, FaTrash } from "react-icons/fa";
 import { Link } from "react-router-dom";
-import React from 'react';
+import React from "react";
 import { useParams } from "react-router-dom";
 import IVehiculoModel from "../../models/Vehiculo";
 import VehiculoService from "../../services/VehiculoService";
+import { MantenimientoList } from "../Mantenimiento/MantenimientoList";
 
+export const VehiculoCard = () => {
+  const { id } = useParams();
+  const [vehiculo, setVehiculo] = useState<IVehiculoModel>();
 
-
-
-export const VehiculoCard=()=> {
-    const {id}=useParams();
-
-    const[vehiculo,setVehiculo]=useState<IVehiculoModel>();
-    useEffect(()=> {
-        if(id)
-        getVehiculo(id);
-    },[id]);
-    
-    const getVehiculo=(id:any)=>{
-        VehiculoService.retrieve(id).then((response:any)=>{
-            setVehiculo(response.data);
-            console.log(response.data);
-        }).catch((e:Error)=>{
-            console.log(e);
+  useEffect(() => {
+    if (id) {
+      VehiculoService.retrieve(+id)
+        .then((response: any) => {
+          setVehiculo(response.data);
+          console.log(response.data);
+        })
+        .catch((e: Error) => {
+          console.log(e);
         });
-    };
+    }
+  }, [id]);
 
-    return ( 
+  return (
+    <div>
+      {vehiculo ? (
         <div>
-            {
-                
-                vehiculo?(
-                <div>
-                    <h1>Placa:{vehiculo.placa}</h1>
+          <div className="card text-white bg-dark mb-3 p-5">
+            <h1>
+              {" "}
+              <strong>Placa :</strong> {vehiculo.placa}
+            </h1>
+            <div>
+              <strong>Modelo: </strong> {vehiculo.modelo}
+            </div>
+            <div>
+              <strong>Color:</strong> {vehiculo.color}
+            </div>
+            <div>
+              <strong>Marca:</strong> {vehiculo.marca}
+            </div>
+          </div>
+          <div>
+            <MantenimientoList idVehiculo={vehiculo.id!} />
+          </div>
 
-                    <tr>
-                        <td>Modelo:{vehiculo.modelo}</td>
-                    </tr>
-
-                    <tr>
-                        <td>Color: {vehiculo.color}</td>
-                    </tr>
-
-                    <tr>
-                        <td> Marca:{vehiculo.marca}</td>
-                    </tr>
-                     
-                    
-                    <br />
-                    <div className="btn-group" role="group">
-                    <Link to={"/vehiculos"} className="btn btn-primary">
-                    <FaArrowLeft /> Volver
-                    </Link>
-                    
-                    <button type="button" className="btn btn-danger">
-                    <FaTrash />Eliminar
-                    </button>
-
-                    </div>
-
-
-
-
-                </div>
-
-
-                ):
-                (
-                    <h1>No hay un Vehiculo</h1>
-                )
-            }
-
-
-
+          <br />
+          <div className="btn-group" role="group">
+            <Link to={"/vehiculos"} className="btn btn-primary">
+              <FaArrowLeft /> Volver
+            </Link>
+          </div>
         </div>
-     );
-}
- 
+      ) : (
+        <h1>No hay un Vehiculo</h1>
+      )}
+    </div>
+  );
+};

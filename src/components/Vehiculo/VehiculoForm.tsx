@@ -25,7 +25,7 @@ export const VehiculoForm=()=> {
      //determina los cambios en cada control input y asigna los valores a cada modelo
      const handleInputChange=(event: ChangeEvent<HTMLInputElement>)=>{
         const {name,value}=event.target;
-        setVehiculo({...vehiculo,[name]:value});
+        setVehiculo({ ...vehiculo,[name]:value});
      };
 
      const handleTextAreaChange=(event:ChangeEvent<HTMLTextAreaElement>)=>{
@@ -54,28 +54,25 @@ export const VehiculoForm=()=> {
      };
 
      useEffect(() => {
-        if (id)
-        getVehiculo(id);
-      }, [id]);
-
-
-      const getVehiculo=(id:any)=>{
-        VehiculoService.retrieve(id).then((response:any)=>{
-            setVehiculo(response.data);
-            console.log(response.data);
+      if (id)
+      {
+        VehiculoService.retrieve(+id)
+        .then((response: any) => {
+          setVehiculo(response.data); //Víncula el resultado del servicio con la función del Hook useState
+          console.log(response.data);
         })
         .catch((e: Error) => {
           console.log(e);
         });
-      };
-
-
+      }
+    }, [id]);
+ 
 
 
     return ( 
         <div className="submit-form">
             <div>
-                {vehiculo.id !==null?( <h1> Vehicculo Actualizado</h1>):( <h1> Registro de nuevo vehiculo </h1>) } 
+                {vehiculo.id !==null ?( <h1> Vehicculo Actualizado</h1>):( <h1> Registro de nuevo vehiculo </h1>) } 
                 <div className="form-group"></div>
                 <label htmlFor="placa">Placa</label>
                 <input type="text" 
