@@ -2,9 +2,10 @@ import Swal from "sweetalert2";
 import http from "../http-common";
 import IRepuestoModel from "../models/Repuesto";
 
-const create = async (data: IRepuestoModel) => {    
+const create = async (data: IRepuestoModel) => {   
+  console.log("hola lola",data); 
   try {
-    const url : string = "/vehiculos/" + data.vehiculo!.id + "/mantenimientos"+data.id!+"/repuesto";
+    const url : string = "/vehiculos/" + data.vehiculo!.id + "/mantenimientos/"+data.id!+"/repuesto";
     const response = await http.post<IRepuestoModel>(url, data);
     if(response.status === 201){
       Swal.fire({
@@ -15,7 +16,7 @@ const create = async (data: IRepuestoModel) => {
 
       });
     }
-    console.log(response);
+   
   } catch (err) {
     console.log(err);
     Swal.fire({
@@ -28,32 +29,8 @@ const create = async (data: IRepuestoModel) => {
 };
 
 
-const retrieve = async (id: number) => {
-    return http.get<IRepuestoModel>(`/repuestos/${id}`);
-};
 
-const update = async (data: IRepuestoModel) => {
-  try {    
-    const response = await http.put<IRepuestoModel>(`/repuestos/${data.id}`, data);
-    if(response.status === 200){
-      Swal.fire({
-        icon: 'success',
-        title: 'Correcto',
-        text: ' Repuesto actualizado',
-        confirmButtonText: 'Aceptar'    
-      });
-    }
 
-  } catch (error) {
-    Swal.fire({
-      icon: 'error',
-      title: '¡Error!',
-      text: 'Network Error',
-      confirmButtonText: 'Aceptar'    
-    });
-  }
-    
-};
 
 const remove = async (id: number) => {
     try {
@@ -77,7 +54,6 @@ const remove = async (id: number) => {
 
 };
 
-
 const list = (page: number, size: number, sort? : String) => {
   const urlRequest : string = "/repuestos/" + page + "/" + size ;
   console.log(urlRequest);
@@ -91,8 +67,6 @@ const count = async () =>  {
 
 const RepuestoService = {
   create,
-  retrieve,
-  update,
   remove,
   list,
   count

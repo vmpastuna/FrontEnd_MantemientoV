@@ -7,7 +7,9 @@ import { NumericLiteral } from "typescript";
 const create = async (data: IMantenimientoModel) => {    
   try {
     const url : string = "/vehiculos/" + data.vehiculo!.id + "/mantenimientos";
-    const response = await http.post<IMantenimientoModel>(url, data);
+    const response = await http.post<IMantenimientoModel>(url, data,{headers : {
+      "Authorization" :  `Bearer ${localStorage.getItem('token')}`
+    }});
     if(response.status === 201){
       Swal.fire({
         icon: 'success',
@@ -29,13 +31,17 @@ const create = async (data: IMantenimientoModel) => {
   }
 };
 const retrieve = async (idVehiculo:number,id:number) => {
-    return await http.get<IMantenimientoModel>(`/vehiculos/${idVehiculo}/mantenimientos/${id}`);
+    return await http.get<IMantenimientoModel>(`/vehiculos/${idVehiculo}/mantenimientos/${id}`,{headers : {
+      "Authorization" :  `Bearer ${localStorage.getItem('token')}`
+    }});
 };
 
 
 const update = async (data: IMantenimientoModel) => {     
   const url : string = `/vehiculos/${data.vehiculo!.id}/mantenimientos/${data.id!}`; 
-  http.put<IMantenimientoModel>(url, data).then((response) => {
+  http.put<IMantenimientoModel>(url, data,{headers : {
+    "Authorization" :  `Bearer ${localStorage.getItem('token')}`
+  }}).then((response) => {
     console.log(response);
     showAlert('¡Correcto!','Mantenimiento actualizada correctamente');
   }).catch((err) => {
@@ -46,7 +52,9 @@ const update = async (data: IMantenimientoModel) => {
 
 const remove = async (idVehiculo: number , id : number) => {
   const url : string = `/vehiculos/${idVehiculo}/mantenimientos/${id}`; 
-  http.delete<string>(url).then((response) =>{
+  http.delete<string>(url,{headers : {
+    "Authorization" :  `Bearer ${localStorage.getItem('token')}`
+  }}).then((response) =>{
     console.log(response);
     showAlert('¡Correcto!','Mantenimieto eliminado correctamente');
   }).catch((err)=>{
@@ -58,7 +66,9 @@ const remove = async (idVehiculo: number , id : number) => {
 
 const list=async( idVehiculo:number)=>{
   const url: string =`/vehiculos/${idVehiculo}/mantenimientos`;
-  return await http.get<Array<IMantenimientoModel>>(url);
+  return await http.get<Array<IMantenimientoModel>>(url,{headers : {
+    "Authorization" :  `Bearer ${localStorage.getItem('token')}`
+  }});
 
 };
 

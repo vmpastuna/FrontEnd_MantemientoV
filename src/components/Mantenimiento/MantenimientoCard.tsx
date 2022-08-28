@@ -71,7 +71,6 @@ console.log("hi");
                     </tr>
 
                     
-                    
                     <br />
                     <div className="btn-group" role="group">
                     <Link to={`/vehiculos/retrieve/${idVehiculo}`} className="btn btn-primary">

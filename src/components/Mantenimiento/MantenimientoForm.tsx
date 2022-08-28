@@ -12,9 +12,7 @@ import IVehiculoModel from "../../models/Vehiculo";
 
 export const MantenimientoForm = () => {
   
-  const state = {
-    selectedOption: null,
-  };
+ 
 
   const { id, idVehiculo } = useParams();
   let navigate = useNavigate();
@@ -101,11 +99,7 @@ export const MantenimientoForm = () => {
   return (
     <div className="submit-form">
       <div>
-        {mantenimiento.id !== null ? (
-          <h1> Mantenimiento Actualizado{mantenimiento.nombre}</h1>
-        ) : (
           <h1> Registro de nuevo Mantenimiento </h1>
-        )}
         {vehiculo ? <h3>{vehiculo.placa} </h3> : <h3>N/A</h3>}
         <div className="form-group"></div>
         <label htmlFor="nombre">Nombre</label>

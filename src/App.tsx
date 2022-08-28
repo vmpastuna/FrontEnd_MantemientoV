@@ -8,6 +8,7 @@ import { VehiculoForm } from './components/Vehiculo/VehiculoForm';
 //importaciones de entidad mantenimiento
  import { MantenimientoForm } from "./components/Mantenimiento/MantenimientoForm";
  import { MantenimientoCard } from "./components/Mantenimiento/MantenimientoCard";
+import { RepuestoForm } from "./components/Repuesto/RepuestoForm";
  
 const title = "Mechanical Workshop";
 const description = "Control de Mantenimiento Vehicular";
@@ -26,16 +27,8 @@ const App: React.FC = () => {
               Vehículos
             </Link>
           </li>   
-          <li className="nav-item">
-            <Link to={"/mantenimientos"} className="nav-link  navbar-brand">
-              Mantenimiento
-            </Link>
-          </li>   
-          <li className="nav-item">
-            <Link to={"/repuestos"} className="nav-link  navbar-brand">
-              Repuesto
-            </Link>
-          </li>       
+       
+           
         </div>
       </nav>
       <div className="container mt-3">
@@ -51,9 +44,9 @@ const App: React.FC = () => {
           <Route path="/vehiculos/:idVehiculo/mantenimientos/:id" element={<MantenimientoForm />}/> 
           <Route path="/vehiculos/:idVehiculo/mantenimientos/update/:id" element={<MantenimientoForm />} />
 
-     
+          <Route path="/vehiculos/:idVehiculo/mantenimientos/:id/create" element={<RepuestoForm />}/>  
           
-           
+            
         </Routes>
       </div>
     </div>

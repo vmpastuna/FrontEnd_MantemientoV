@@ -1,10 +1,31 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
+import IUserModel from '../models/User';
+import IUserTokenModel from '../models/UserToken';
+import UserService from '../services/UserServices';
 type Portada = {
     title : string;
     description: string;
   }
 
 export const Home = (props: Portada) => {
+
+  const initialUserModel : IUserModel = {
+    name : "Vanesa" , 
+    password : "vanesa"
+  };
+
+  const [userToken , setUserToken] = useState<IUserTokenModel>();
+
+   useEffect(()=> {
+  UserService.login(initialUserModel)
+  .then((response : any) => {
+    console.log(response.data); 
+  })
+  .catch((e : Error)=> {
+    console.log(e); 
+  });
+} , [initialUserModel , userToken])
+
     return (
         <div className="px-4 py-5 my-5 text-center">
           <img src="https://cdn-icons-png.flaticon.com/512/1514/1514782.png" className="d-block mx-auto mb-4" height="200" alt="logo"/>
