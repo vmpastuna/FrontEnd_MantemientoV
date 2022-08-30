@@ -70,9 +70,9 @@ export const VehiculoForm=()=> {
 
 
     return ( 
-        <div className="submit-form">
+        <div className="submit-form" style={{ color: 'white' }}>
             <div>
-                {vehiculo.id !==null ?( <h1> Vehicculo Actualizado</h1>):( <h1> Registro de nuevo vehiculo </h1>) } 
+                {vehiculo.id !==null ?( <h1> Vehiculo Actualizado</h1>):( <h1> Registro de nuevo vehiculo </h1>) } 
                 <div className="form-group"></div>
                 <label htmlFor="placa">Placa</label>
                 <input type="text" 

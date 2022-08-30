@@ -9,6 +9,8 @@ import { VehiculoForm } from './components/Vehiculo/VehiculoForm';
  import { MantenimientoForm } from "./components/Mantenimiento/MantenimientoForm";
  import { MantenimientoCard } from "./components/Mantenimiento/MantenimientoCard";
 import { RepuestoForm } from "./components/Repuesto/RepuestoForm";
+import { LoginCard } from "./components/Login/LoginCard";
+ 
  
 const title = "Mechanical Workshop";
 const description = "Control de Mantenimiento Vehicular";
@@ -16,15 +18,18 @@ const description = "Control de Mantenimiento Vehicular";
 const App: React.FC = () => {
   return (
     <div>
-      <nav className="navbar navbar-expand navbar-dark bg-dark">   
+      <nav className="navbar navbar-expand navbar-dark bg-dark">  
+       
         <Link to={"/"}  className="navbar-brand ms-3 ">
              <img src="https://cdn-icons-png.flaticon.com/512/3339/3339392.png" height="45" width="45" alt="logo"/>
           
         </Link>
+        <Link to={"/login"}  className="navbar-brand ms-3 ">
+          Login
+        </Link>
         <div className="navbar-nav mr-auto">
           <li className="nav-item">
-            <Link to={"/vehiculos"} className="nav-link  navbar-brand">
-              Vehículos
+            <Link to={"/vehiculos"} className="nav-link  navbar-brand">Vehiculos
             </Link>
           </li>   
        
@@ -34,6 +39,7 @@ const App: React.FC = () => {
       <div className="container mt-3">
         <Routes>
           <Route path="/" element={<Home title={title} description={description} />} />    
+          <Route path="/login" element={<LoginCard />}/> 
           <Route path="/vehiculos" element={<VehiculoList />}/>    
           <Route path="/vehiculos/create" element={<VehiculoForm />}/>   
           <Route path="/vehiculos/retrieve/:id" element={<VehiculoCard />}/>  

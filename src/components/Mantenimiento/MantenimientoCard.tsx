@@ -41,9 +41,9 @@ export const MantenimientoCard=()=> {
         }
     },[vehiculo,mantenimiento,id,idVehiculo]);
 
-console.log("hi");
+//console.log("hi");
     return ( 
-        <div>
+        <div style={{ color: 'white' }}>
             {
                 
                 mantenimiento?(

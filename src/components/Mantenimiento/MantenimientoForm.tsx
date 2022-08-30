@@ -97,7 +97,7 @@ export const MantenimientoForm = () => {
   const options = ["Mantenimiento Preventivo", "Mantenimiento Correctivo", "Mantenimiento Predictivo" ];
 
   return (
-    <div className="submit-form">
+    <div className="submit-form" style={{ color: 'white' }}>
       <div>
           <h1> Registro de nuevo Mantenimiento </h1>
         {vehiculo ? <h3>{vehiculo.placa} </h3> : <h3>N/A</h3>}

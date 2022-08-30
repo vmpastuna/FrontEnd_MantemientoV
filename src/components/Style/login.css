@@ -1,0 +1,63 @@
+
+
+
+.container{
+height: 100%;
+align-content: center;
+}
+
+.card{
+
+margin-top: auto;
+margin-bottom: auto;
+width: 400px;
+background-color: rgba(0,0,0,0.5) !important;
+}
+
+
+.card-header h3{
+color: rgb(28, 240, 9);
+text-align:center;
+}
+
+
+.input-group-prepend {
+width: 365px;
+color: black;
+  margin-top: 10px;
+  margin-right: 10px;
+  margin-bottom: 10px;
+  margin-left: 2px;
+border:0 !important;
+}
+
+.boton {
+    margin-top: 30px;
+    margin-right: 10px;
+    margin-bottom: 10px;
+    margin-left: 2px;
+}
+
+input:focus{
+outline: 0 0 0 0  !important;
+box-shadow: 0 0 0 0 !important;
+
+}
+
+
+.login_btn{
+color: black;
+background-color: #FFC312;
+width: 100px;
+text-align:center;
+}
+
+
+
+.links{
+color: rgb(35, 226, 9);
+}
+
+.links a{
+margin-left: 4px;
+}

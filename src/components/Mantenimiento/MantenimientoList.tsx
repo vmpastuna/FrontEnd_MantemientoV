@@ -50,10 +50,10 @@ export const MantenimientoList = (props: AppProps) => {
     });
   };
   return (
-    <div className="list row">
+    <div className="list row" style={{ color: 'white' }}>
       <h4>Mantenimientos</h4>
       <div className="col-md-12">
-        <table className="table">
+        <table className="table" style={{ color: 'white' }}>
           <thead>
             <tr>
               <th>#</th>

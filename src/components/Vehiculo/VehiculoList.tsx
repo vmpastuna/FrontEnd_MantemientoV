@@ -109,7 +109,7 @@ export const VehiculoList = () => {
 
    
     return ( 
-        <div className='list row'>
+        <div className='list row' style={{ color: 'red' }}>
               <h1> hay {itemsCount} Vehículos</h1>
             <div className="row containerInput">
                     <div className="col-5">
@@ -129,15 +129,15 @@ export const VehiculoList = () => {
 
             </div>
             <div className="m-"></div>
-            <div className="table">
-                <table className="table table-striped ">
+            <div className="table" >
+                <table className="table  "  style={{ color: 'white' }}>
                     <thead >
-                        <tr>
-                            <th>#</th>
-                            <th>Placa</th>
-                            <th>Modelo</th>
-                            <th>Color</th>
-                            <th>Marca</th>
+                        <tr  style={{ color: 'white' }}>
+                            <th><strong>#</strong> </th>
+                            <th><strong>Placa</strong> </th>
+                            <th><strong> Modelo</strong></th>
+                            <th><strong> Color</strong></th>
+                            <th><strong> Marca</strong></th>
                             <th>
                                 <Link to={"/vehiculos/create"} className="btn btn-success">
                                   <FaPlus /> Agregar
@@ -187,7 +187,7 @@ export const VehiculoList = () => {
                     </tbody>
                 </table>
 
-                <div className="container">
+                <div className="page-item active">
                 <ReactPaginate
                   activeClassName="page-item active"                
                   pageLinkClassName="page-link"
