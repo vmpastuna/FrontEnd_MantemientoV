@@ -38,6 +38,7 @@ export const MantenimientoList = (props: AppProps) => {
         MantenimientoService.remove(idVehiculo, id)
           .then((response: any) => {
             showAlert("¡Correcto!", "Mantenimiento eliminado correctamente");
+            window.location.reload();
           })
           .catch((e: Error) => {
             showErrorAlert(

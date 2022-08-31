@@ -91,10 +91,10 @@ const remove = async (id: number) => {
     "Authorization" :  `Bearer ${localStorage.getItem('token')}`
   }} ).then((response)=> {
     console.log(response);
-    showAlert('¡Correcto!', 'Examen eliminado correctamente');
+    showAlert('¡Correcto!', 'Vehiculo eliminado correctamente');
   }).catch((err) => {
     console.error(err);
-    showErrorAlert('¡Error!', 'El Examen no pudo ser eliminado');
+    showErrorAlert('¡Error!', 'El vehiculo no pudo ser eliminado');
   });
 };
 

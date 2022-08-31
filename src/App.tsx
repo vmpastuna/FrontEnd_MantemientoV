@@ -1,4 +1,4 @@
-import { Routes, Route, Link } from "react-router-dom";
+import { Routes, Route, Link, Navigate } from "react-router-dom";
 import React from 'react';
 import "bootstrap/dist/css/bootstrap.min.css";
 import { Home } from "./components/Home";
@@ -10,12 +10,21 @@ import { VehiculoForm } from './components/Vehiculo/VehiculoForm';
  import { MantenimientoCard } from "./components/Mantenimiento/MantenimientoCard";
 import { RepuestoForm } from "./components/Repuesto/RepuestoForm";
 import { LoginCard } from "./components/Login/LoginCard";
+import { FaLongArrowAltUp } from "react-icons/fa";
+import { useNavigate } from "react-router-dom";
  
  
 const title = "Mechanical Workshop";
 const description = "Control de Mantenimiento Vehicular";
 
 const App: React.FC = () => {
+  let navigate = useNavigate();
+  const logOut=()=>{
+    localStorage.clear();
+    navigate('/login');
+    console.log("hola");
+  }
+
   return (
     <div>
       <nav className="navbar navbar-expand navbar-dark bg-dark">  
@@ -26,11 +35,16 @@ const App: React.FC = () => {
         </Link>
         <Link to={"/login"}  className="navbar-brand ms-3 ">
           Login
-        </Link>
+        </Link > 
+
+        <button  className="navbar-brand ms-3 " onClick={logOut} style={{ color: 'red' }} >
+        Salir
+        </button>
+        
+        
         <div className="navbar-nav mr-auto">
           <li className="nav-item">
-            <Link to={"/vehiculos"} className="nav-link  navbar-brand">Vehiculos
-            </Link>
+            <Link to={"/vehiculos"} className="nav-link  navbar-brand"></Link>
           </li>   
        
            

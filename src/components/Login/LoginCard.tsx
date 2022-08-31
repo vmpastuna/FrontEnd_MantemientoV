@@ -5,6 +5,8 @@ import React from "react";
 import IUserTokenModel from "../../models/UserToken";
 import UserService from "../../services/UserServices";
 import '../Style/login.css';
+import { Link } from "react-router-dom";
+import { text } from "@fortawesome/fontawesome-svg-core";
 
 
 const initialUserModel: IUserModel = {
@@ -17,8 +19,9 @@ export const LoginCard = () => {
   let navigate = useNavigate();
 
   //Hooks control de Token
-  const [userToken, setUserToken] = useState<IUserTokenModel>();
+  //const [userToken, setUserToken] = useState<IUserTokenModel>();
   const [user, setUser] = useState<IUserModel>(initialUserModel);
+  const [userLogged,setUserLoger]=useState(false);
 
 
       //Escucha los cambios en cada control Input y los asigna a los valores del Modelo
@@ -28,18 +31,25 @@ export const LoginCard = () => {
     };
 
   const loginUser = () => {
-      UserService.login(user)
+        UserService.login(user)
         .then((response: any) => {
-          navigate('/exams');
-          console.log(response.data);
+         
+          if(localStorage.getItem("token")!=null){
+            navigate('/vehiculos')
+            
+          }else{
+            navigate('/login')
+            console.log(response.data);
+          }
+          
         })
         .catch((e: Error) => {
-          navigate('/');
           console.log(e);
-
         });
   };
-   return (
+  
+
+  return (
     <div className="container">
     <div className="d-flex justify-content-center h-100">
       <div className="card">
@@ -64,7 +74,7 @@ export const LoginCard = () => {
             
             <div className="input-group-prepend">
                   <input
-                    type="text"
+                    type="password"
                     className="form-control"
                     placeholder="password"
                     id="password"
@@ -78,6 +88,7 @@ export const LoginCard = () => {
             <div className="boton">
                 <button  type="button"  className="btn float-right login_btn"  onClick={loginUser} >
                   Login
+                
                 </button>
 
             </div>
