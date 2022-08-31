@@ -6,13 +6,12 @@ import Dropdown from 'react-dropdown'
 import IRepuestoModel from "../../models/Repuesto";
 import RepuestoService from "../../services/RepuestoService";
 import IVehiculoModel from "../../models/Vehiculo";
-import IMantenimientoModel from "../../models/Mantenimiento";
-import MantenimientoService from "../../services/MantenimientoService";
 import VehiculoService from "../../services/VehiculoService";
 
 
 export const RepuestoForm=()=> {
-  const { id, idVehiculo, idMantenimiento } = useParams();
+
+  const { id, idVehiculo } = useParams();
   let navigate = useNavigate();
 
   // modeo vacio
@@ -23,13 +22,12 @@ export const RepuestoForm=()=> {
     descripcion:"",
     cantidad:0,
     vehiculo: null,
-    mantenimiento:null 
   };
+  
 
   //Hooks para gestionar el modelo
-  const [repuesto, setRepuesto] = useState<IRepuestoModel>(initialRepuestoModel);
+  const [repuesto, setRepuesto] = useState<IRepuestoModel>( initialRepuestoModel);
   const [vehiculo, setVehiculo] = useState<IVehiculoModel>();
-  const [mantenimiento, setMantenimiento] = useState<IMantenimientoModel>();
   const [opt, setOption] = useState<string>('Tipos de Repuesto');
 
   //determina los cambios en cada control input y asigna los valores a cada modelo
@@ -39,67 +37,46 @@ export const RepuestoForm=()=> {
   };
   const handleItemPerPageClick = (event : any) => {
     const {value} = event;
-    setRepuesto({ ...initialRepuestoModel, ["tipo"]: value });
+    setRepuesto({ ...repuesto, ["tipo"]: value });
   }
 
   useEffect(() => {
     if (idVehiculo) {
       VehiculoService.retrieve(+idVehiculo)
         .then((response: any) => {
-        //  setMantenimiento(response.data);
           setVehiculo(response.data);
           console.log(response.data);
-          
         })
         .catch((e: Error) => {
           console.log(e);
         });
-
-        if(idVehiculo!=null){}
-
-  
-/*            if (idVehiculo && idMantenimiento) {
-              MantenimientoService.retrieve(+idVehiculo,+idMantenimiento)
-                .then((response: any) => {
-                  console.log("USE EFECT"+ response)
-                  setMantenimiento(response.data);
-                  console.log(response.data);
-                })
-                .catch((e: Error) => {
-                  console.log(e);
-        });
-            
-        }*/
-        
     }
-    
-    
 
-  }, [id, idVehiculo]);
-
+  }, [idVehiculo]);
+    
   const saveRepuesto = () => {
+    
       repuesto.vehiculo = vehiculo!;
-      repuesto.mantenimiento = mantenimiento!;
-      console.log("Repuesto: \n"+repuesto.id+ " nombre repuesto: "+repuesto.nombre);
       RepuestoService.create(repuesto)
         .then((response: any) => {
-          navigate(`/vehiculos/retrieve/${vehiculo!.id}/mantenimientos/retrieve/${mantenimiento!.id}`);
+          navigate(`/vehiculos/retrieve/${vehiculo!.id}`);
           console.log(response.data);
         })
         .catch((e: Error) => {
           console.log(e);
         });
     
-}
+  };
 
 
-const options = ["Mantenimiento Preventivo", "Mantenimiento Correctivo", "Mantenimiento Predictivo" ];
+
+const options = ["Original", "Alternativo", "Genuino" ];
 
   return (
     <div className="submit-form">
       <div>
         <h1> Registro de nuevo repuesto  </h1>
-        {mantenimiento ?  <h3>{mantenimiento.nombre} </h3> : <h3>N/A</h3>}
+        {repuesto ?  <h3>{repuesto.nombre} </h3> : <h3>N/A</h3>}
          
         <label htmlFor="nombre">Nombre</label>
         <input
@@ -148,7 +125,8 @@ const options = ["Mantenimiento Preventivo", "Mantenimiento Correctivo", "Manten
 
         <div className="btn-group" role="group">
           <Link
-            to={`/mantenimiento/retrieve/${idMantenimiento}`}
+          to={``}
+            //to={`/mantenimiento/retrieve/${idMantenimiento}`}
             className="btn btn-primary"
           >
             <FaArrowLeft /> Volver

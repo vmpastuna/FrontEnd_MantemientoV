@@ -18,8 +18,10 @@ const title = "Mechanical Workshop";
 const description = "Control de Mantenimiento Vehicular";
 
 const App: React.FC = () => {
+  //Eliminar el localStorage y se elimina el token
   let navigate = useNavigate();
-  const logOut=()=>{
+
+  const Salir=()=>{
     localStorage.clear();
     navigate('/login');
     console.log("hola");
@@ -37,7 +39,7 @@ const App: React.FC = () => {
           Login
         </Link > 
 
-        <button  className="navbar-brand ms-3 " onClick={logOut} style={{ color: 'red' }} >
+        <button  className="navbar-brand ms-3 " onClick={Salir} style={{ color: 'red' }} >
         Salir
         </button>
         
@@ -64,9 +66,9 @@ const App: React.FC = () => {
           <Route path="/vehiculos/:idVehiculo/mantenimientos/:id" element={<MantenimientoForm />}/> 
           <Route path="/vehiculos/:idVehiculo/mantenimientos/update/:id" element={<MantenimientoForm />} />
 
-          <Route path="/vehiculos/:idVehiculo/mantenimientos/:id/create" element={<RepuestoForm />}/>  
+          <Route path="/vehiculos/:idVehiculo/repuestos/create" element={<RepuestoForm />}/> 
           
-            
+         
         </Routes>
       </div>
     </div>

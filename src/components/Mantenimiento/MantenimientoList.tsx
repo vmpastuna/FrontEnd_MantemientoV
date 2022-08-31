@@ -118,9 +118,6 @@ export const MantenimientoList = (props: AppProps) => {
                       Eliminar
                     </button>
 
-                    <Link to={"/vehiculos/" + props.idVehiculo + "/mantenimientos/"+ Mantenimiento.id +"/create"} className="btn btn-success">
-                   <FaPlus /> Agregar Repuesto
-                                </Link>
                   </td>
                 </tr>
               ))}

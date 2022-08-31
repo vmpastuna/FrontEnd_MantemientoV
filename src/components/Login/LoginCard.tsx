@@ -21,9 +21,7 @@ export const LoginCard = () => {
   //Hooks control de Token
   //const [userToken, setUserToken] = useState<IUserTokenModel>();
   const [user, setUser] = useState<IUserModel>(initialUserModel);
-  const [userLogged,setUserLoger]=useState(false);
-
-
+ 
       //Escucha los cambios en cada control Input y los asigna a los valores del Modelo
       const handleInputChange = (event: ChangeEvent<HTMLInputElement>) => {
         const { name, value } = event.target;
@@ -33,15 +31,12 @@ export const LoginCard = () => {
   const loginUser = () => {
         UserService.login(user)
         .then((response: any) => {
-         
           if(localStorage.getItem("token")!=null){
-            navigate('/vehiculos')
-            
+            navigate('/vehiculos') 
           }else{
             navigate('/login')
             console.log(response.data);
           }
-          
         })
         .catch((e: Error) => {
           console.log(e);

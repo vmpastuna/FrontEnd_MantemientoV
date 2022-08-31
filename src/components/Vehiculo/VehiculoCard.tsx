@@ -6,6 +6,7 @@ import { useParams } from "react-router-dom";
 import IVehiculoModel from "../../models/Vehiculo";
 import VehiculoService from "../../services/VehiculoService";
 import { MantenimientoList } from "../Mantenimiento/MantenimientoList";
+import { RepuestoList } from "../Repuesto/RepuestoList";
 
 export const VehiculoCard = () => {
   const { id } = useParams();
@@ -45,6 +46,10 @@ export const VehiculoCard = () => {
           </div>
           <div>
             <MantenimientoList idVehiculo={vehiculo.id!} />
+          </div>
+
+          <div>
+            <RepuestoList idVehiculo={vehiculo.id!} />
           </div>
 
           <br />

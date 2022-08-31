@@ -93,6 +93,7 @@ export const VehiculoList = () => {
                     setItemsCount(updateItemsCount);
                     setPageCount(Math.ceil(updateItemsCount/+itemsPerPage));
                     showAlert('¡Correcto!','Registro eliminado Correctamente');
+                    window.location.reload();
                 }).catch((e:Error)=>{
                     showErrorAlert('¡Error!', 'Error al intentar borrar el registro');
                     console.log(e);
